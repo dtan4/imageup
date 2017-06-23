@@ -6,4 +6,5 @@ import (
 
 func drawRoutes(e *echo.Echo) {
 	e.GET("/", rootHandler)
+	e.GET("/ping", pingHandler)
 }

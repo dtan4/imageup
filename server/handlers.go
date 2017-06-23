@@ -9,3 +9,7 @@ import (
 func rootHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "ImageUp")
 }
+
+func pingHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "pong")
+}
