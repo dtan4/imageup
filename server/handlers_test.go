@@ -25,7 +25,6 @@ func TestWebhooksQuayHandler(t *testing.T) {
 		},
 		{
 			reqBody:   `invalid body`,
-			resBody:   "accepted",
 			expectErr: true,
 		},
 	}
