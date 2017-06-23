@@ -33,11 +33,17 @@ cross-build:
 		for arch in amd64 386; do \
 			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 go build $(LDFLAGS) -o dist/$$os-$$arch/$(NAME); \
 		done; \
-	done
+	don
+
+.PHONY: dep
+depo:
+ifeq ($(shell command -v dep 2> /dev/null),)
+	go get -u github.com/golang/dep/cmd/dep
+endif
 
 .PHONY: deps
-deps: glide
-	glide install
+deps: dep
+	dep ensure -v
 
 .PHONY: dist
 dist:
@@ -56,12 +62,6 @@ ifeq ($(findstring ELF 64-bit LSB,$(shell file bin/$(NAME) 2> /dev/null)),)
 endif
 	docker build -t $(DOCKER_IMAGE) .
 
-.PHONY: glide
-glide:
-ifeq ($(shell command -v glide 2> /dev/null),)
-	curl https://glide.sh/get | sh
-endif
-
 .PHONY: install
 install:
 	go install $(LDFLAGS)
@@ -73,8 +73,8 @@ release:
 
 .PHONY: test
 test:
-	go test -cover -v `glide novendor`
+	go test -cover -v $$(go list ./... | grep -v vendor)
 
 .PHONY: update-deps
-update-deps: glide
-	glide update
+update-deps: dep
+	dep ensure -update -v
