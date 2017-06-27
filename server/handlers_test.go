@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -12,8 +13,8 @@ import (
 
 type DummyDockerClient struct{}
 
-func (*DummyDockerClient) PullImage(image, tag string) error {
-	return nil
+func (*DummyDockerClient) PullImage(image, tag string) (io.ReadCloser, error) {
+	return ioutil.NopCloser(strings.NewReader("test")), nil
 }
 
 func TestWebhooksQuayHandler(t *testing.T) {

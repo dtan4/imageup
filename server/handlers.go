@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/dtan4/imageup/docker"
 	"github.com/dtan4/imageup/server/middleware"
 	"github.com/labstack/echo"
 	"github.com/pkg/errors"
@@ -52,10 +53,16 @@ func webhooksQuayHandler(c echo.Context) error {
 
 	for _, tag := range r.DockerTags {
 		go func(t string) {
-			if err := cli.PullImage(r.DockerURL, t); err != nil {
+			out, err := cli.PullImage(r.DockerURL, t)
+			if err != nil {
 				c.Logger().Error(err)
 				return
 			}
+			defer out.Close()
+
+			docker.PrintPullMessage(out, func(line string) {
+				c.Logger().Print(line)
+			})
 
 		}(tag)
 	}
