@@ -6,7 +6,9 @@ import (
 	"github.com/dtan4/imageup/docker"
 	"github.com/dtan4/imageup/server/middleware"
 	"github.com/labstack/echo"
+	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
+	"github.com/satori/go.uuid"
 )
 
 func rootHandler(c echo.Context) error {
@@ -60,8 +62,13 @@ func webhooksQuayHandler(c echo.Context) error {
 			}
 			defer out.Close()
 
+			pullID := uuid.NewV4().String()
+
 			docker.PrintPullMessage(out, func(line string) {
-				c.Logger().Print(line)
+				c.Logger().Printj(log.JSON{
+					"message": line,
+					"pull-id": pullID,
+				})
 			})
 
 		}(tag)
