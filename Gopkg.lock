@@ -2,10 +2,51 @@
 
 
 [[projects]]
+  name = "github.com/Microsoft/go-winio"
+  packages = ["."]
+  revision = "f533f7a102197536779ea3a8cb881d639e21ec5a"
+  version = "v0.4.2"
+
+[[projects]]
+  name = "github.com/Sirupsen/logrus"
+  packages = ["."]
+  revision = "202f25545ea4cf9b191ff7f846df5d87c9382c2b"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
   revision = "d2709f9f1f31ebcda9651b03077758c1f3a0018c"
   version = "v3.0.0"
+
+[[projects]]
+  name = "github.com/docker/distribution"
+  packages = ["digest","reference"]
+  revision = "a25b9ef0c9fe242ac04bb20d3a028442b7d266b6"
+  version = "v2.6.1"
+
+[[projects]]
+  name = "github.com/docker/docker"
+  packages = ["api","api/types","api/types/blkiodev","api/types/container","api/types/events","api/types/filters","api/types/image","api/types/mount","api/types/network","api/types/registry","api/types/strslice","api/types/swarm","api/types/time","api/types/versions","api/types/volume","client","pkg/ioutils","pkg/longpath","pkg/system","pkg/tlsconfig"]
+  revision = "89658bed64c2a8fe05a978e5b87dbec409d57a0f"
+
+[[projects]]
+  name = "github.com/docker/go-connections"
+  packages = ["nat","sockets","tlsconfig"]
+  revision = "990a1a1a70b0da4c4cb70e117971a4f0babfbf1a"
+  version = "v0.2.1"
+
+[[projects]]
+  name = "github.com/docker/go-units"
+  packages = ["."]
+  revision = "f2d77a61e3c169b43402a0a1e84f06daf29b8190"
+  version = "v0.3.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/docker/libtrust"
+  packages = ["."]
+  revision = "aabc10ec26b754e797f9028f4589c5b7bd90dc20"
 
 [[projects]]
   name = "github.com/labstack/echo"
@@ -32,6 +73,18 @@
   version = "v0.0.2"
 
 [[projects]]
+  name = "github.com/opencontainers/runc"
+  packages = ["libcontainer/user"]
+  revision = "baf6536d6259209c3edfa2b22237af82942d3dfa"
+  version = "v0.1.1"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/valyala/bytebufferpool"
   packages = ["."]
@@ -51,13 +104,19 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context","context/ctxhttp","proxy"]
+  revision = "5f8847ae0d0e90b6a9dc8148e7ad616874625171"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = ["unix","windows"]
   revision = "fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e005a22fb1ddfe8dd1a841fa1258537aa320f8768f3c0a9ca91cfc2e609d6be2"
+  inputs-digest = "3d4a59d323db4d447f2b6b5c72551266975a64cd078f4423e1709cdd2f8fb846"
   solver-name = "gps-cdcl"
   solver-version = 1

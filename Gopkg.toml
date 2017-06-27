@@ -20,3 +20,10 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+[[constraint]]
+  name = "github.com/docker/docker"
+  revision = "89658bed64c2a8fe05a978e5b87dbec409d57a0f" # v17.05.0-ce
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.0"
