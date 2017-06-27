@@ -1,6 +1,12 @@
 package docker
 
 import (
+	"context"
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/pkg/errors"
 )
@@ -29,5 +35,14 @@ func NewClient() (*RealClient, error) {
 
 // PullImage pulls image from Docker Image Registry
 func (c *RealClient) PullImage(image, tag string) error {
+	imageRef := fmt.Sprintf("%s:%s", image, tag)
+
+	out, err := c.cli.ImagePull(context.Background(), imageRef, types.ImagePullOptions{})
+	if err != nil {
+		return errors.Wrapf(err, "cannot pull image %q", imageRef)
+	}
+	// TOOD: use appropriate logger
+	io.Copy(os.Stdout, out)
+
 	return nil
 }

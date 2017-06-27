@@ -22,7 +22,15 @@
 
 [[constraint]]
   name = "github.com/docker/docker"
-  revision = "89658bed64c2a8fe05a978e5b87dbec409d57a0f" # v17.05.0-ce
+  version = "v17.05.0-ce"
+
+# To use reference package:
+#   vendor/github.com/docker/docker/client/container_commit.go:17: undefined: reference.ParseNormalizedNamed
+#   vendor/github.com/docker/docker/client/container_commit.go:25: undefined: reference.TagNameOnly
+#   vendor/github.com/docker/docker/client/container_commit.go:30: undefined: reference.FamiliarName
+[[override]]
+  name = "github.com/docker/distribution"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/pkg/errors"
