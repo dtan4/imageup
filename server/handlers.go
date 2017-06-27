@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dtan4/imageup/docker"
@@ -69,6 +70,11 @@ func webhooksQuayHandler(c echo.Context) error {
 					"message": line,
 					"pull-id": pullID,
 				})
+			})
+
+			c.Logger().Printj(log.JSON{
+				"message": fmt.Sprintf("pulling %s:%s completed successfully", r.DockerURL, t),
+				"pull-id": pullID,
 			})
 
 		}(tag)
