@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/dtan4/imageup/server/middleware"
 	"github.com/labstack/echo"
 )
 
@@ -41,6 +42,21 @@ func webhooksQuayHandler(c echo.Context) error {
 	if err := c.Bind(r); err != nil {
 		// TODO: print error in log
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid json payload")
+	}
+
+	cli, err := middleware.GetDockerClient(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Docker client is not set")
+	}
+
+	for _, tag := range r.DockerTags {
+		go func(t string) {
+			if err := cli.PullImage(r.DockerURL, t); err != nil {
+				// TODO: print error in log
+				return
+			}
+
+		}(tag)
 	}
 
 	return c.String(http.StatusAccepted, "accepted")

@@ -10,6 +10,12 @@ import (
 	"github.com/labstack/echo"
 )
 
+type DummyDockerClient struct{}
+
+func (*DummyDockerClient) PullImage(image, tag string) error {
+	return nil
+}
+
 func TestWebhooksQuayHandler(t *testing.T) {
 	testcases := []struct {
 		reqBody   string
@@ -36,6 +42,7 @@ func TestWebhooksQuayHandler(t *testing.T) {
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
+		c.Set("DOCKER", &DummyDockerClient{})
 
 		err := webhooksQuayHandler(c)
 
