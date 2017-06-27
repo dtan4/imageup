@@ -7,6 +7,7 @@ import (
 	"github.com/dtan4/imageup/server/middleware"
 	"github.com/labstack/echo"
 	echoMW "github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 // Run starts ImageUp server
@@ -26,5 +27,6 @@ func Run(port int) {
 
 	addr := fmt.Sprintf(":%d", port)
 
+	e.Logger.SetLevel(log.ERROR)
 	e.Logger.Fatal(e.Start(addr))
 }
