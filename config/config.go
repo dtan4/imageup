@@ -11,7 +11,7 @@ const (
 
 // Config represents configurations of ImageUp
 type Config struct {
-	Port int `envconfig:"port"`
+	Port int `envconfig:"port" default:"8000"`
 }
 
 // Load loads configurations from environment variables
