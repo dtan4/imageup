@@ -4,9 +4,6 @@ services:
 language: go
 go:
   - '1.8'
-cache:
-  directories:
-    - vendor
 install:
   - make deps
 script:
