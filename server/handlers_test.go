@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/gommon/log"
 )
 
 type DummyDockerClient struct{}
@@ -37,6 +38,7 @@ func TestWebhooksQuayHandler(t *testing.T) {
 	}
 
 	e := echo.New()
+	e.Logger.SetLevel(log.OFF)
 
 	for _, tc := range testcases {
 		req := httptest.NewRequest(echo.POST, "/", strings.NewReader(tc.reqBody))
