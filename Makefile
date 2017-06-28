@@ -36,7 +36,7 @@ cross-build:
 	don
 
 .PHONY: dep
-depo:
+dep:
 ifeq ($(shell command -v dep 2> /dev/null),)
 	go get -u github.com/golang/dep/cmd/dep
 endif
@@ -73,7 +73,7 @@ release:
 
 .PHONY: test
 test:
-	go test -cover -v $$(go list ./... | grep -v vendor)
+	go test -cover -race -v $$(go list ./... | grep -v vendor)
 
 .PHONY: update-deps
 update-deps: dep
