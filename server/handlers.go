@@ -41,6 +41,16 @@ type QuayRequestTriggerMetadata struct {
 	Commit        string `json:"commit"`
 }
 
+func contains(ss []string, s string) bool {
+	for _, v := range ss {
+		if v == s {
+			return true
+		}
+	}
+
+	return false
+}
+
 func webhooksQuayHandler(c echo.Context) error {
 	r := new(QuayRequest)
 
@@ -52,6 +62,18 @@ func webhooksQuayHandler(c echo.Context) error {
 	if err != nil {
 		c.Logger().Error(errors.Wrap(err, "Docker client is not set"))
 		return echo.NewHTTPError(http.StatusInternalServerError, "Docker client is not set")
+	}
+
+	imageWhitelist, err := middleware.GetImageWhitelist(c)
+	if err != nil {
+		c.Logger().Error(errors.Wrap(err, "invalid image whitelist"))
+		return echo.NewHTTPError(http.StatusInternalServerError, "invalid image whitelist")
+	}
+
+	if imageWhitelist != nil {
+		if !contains(imageWhitelist, r.DockerURL) {
+			return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("pulling %s is not authorized", r.DockerURL))
+		}
 	}
 
 	for _, tag := range r.DockerTags {

@@ -20,20 +20,36 @@ func (*DummyDockerClient) PullImage(image, tag string) (io.ReadCloser, error) {
 
 func TestWebhooksQuayHandler(t *testing.T) {
 	testcases := []struct {
-		reqBody   string
-		code      int
-		resBody   string
-		expectErr bool
+		reqBody        string
+		imageWhitelist []string
+		code           int
+		resBody        string
+		expectErr      bool
 	}{
 		{
-			reqBody:   `{"build_id": "fake-build-id", "trigger_kind": "GitHub", "name": "imageup", "repository": "dtan4/imageup", "namespace": "dtan4", "docker_url": "quay.io/dtan4/imageup", "trigger_id": "1245634", "docker_tags": ["latest", "foo", "bar"], "build_name": "some-fake-build", "image_id": "1245657346", "trigger_metadata": {"default_branch": "master", "ref": "refs/heads/somebranch", "commit": "361babb16f96bcf8499194b4962d841bbb3629d9"}, "homepage": "https://quay.io/repository/dtan4/imageup/build/fake-build-id"}`,
-			code:      http.StatusAccepted,
-			resBody:   "accepted",
-			expectErr: false,
+			reqBody:        `{"build_id": "fake-build-id", "trigger_kind": "GitHub", "name": "imageup", "repository": "dtan4/imageup", "namespace": "dtan4", "docker_url": "quay.io/dtan4/imageup", "trigger_id": "1245634", "docker_tags": ["latest", "foo", "bar"], "build_name": "some-fake-build", "image_id": "1245657346", "trigger_metadata": {"default_branch": "master", "ref": "refs/heads/somebranch", "commit": "361babb16f96bcf8499194b4962d841bbb3629d9"}, "homepage": "https://quay.io/repository/dtan4/imageup/build/fake-build-id"}`,
+			imageWhitelist: nil,
+			code:           http.StatusAccepted,
+			resBody:        "accepted",
+			expectErr:      false,
 		},
 		{
-			reqBody:   `invalid body`,
-			expectErr: true,
+			reqBody:        `{"build_id": "fake-build-id", "trigger_kind": "GitHub", "name": "imageup", "repository": "dtan4/imageup", "namespace": "dtan4", "docker_url": "quay.io/dtan4/imageup", "trigger_id": "1245634", "docker_tags": ["latest", "foo", "bar"], "build_name": "some-fake-build", "image_id": "1245657346", "trigger_metadata": {"default_branch": "master", "ref": "refs/heads/somebranch", "commit": "361babb16f96bcf8499194b4962d841bbb3629d9"}, "homepage": "https://quay.io/repository/dtan4/imageup/build/fake-build-id"}`,
+			imageWhitelist: []string{"quay.io/dtan4/imageup"},
+			code:           http.StatusAccepted,
+			resBody:        "accepted",
+			expectErr:      false,
+		},
+		{
+			reqBody:        `{"build_id": "fake-build-id", "trigger_kind": "GitHub", "name": "imageup", "repository": "dtan4/imageup", "namespace": "dtan4", "docker_url": "quay.io/dtan4/imageup", "trigger_id": "1245634", "docker_tags": ["latest", "foo", "bar"], "build_name": "some-fake-build", "image_id": "1245657346", "trigger_metadata": {"default_branch": "master", "ref": "refs/heads/somebranch", "commit": "361babb16f96bcf8499194b4962d841bbb3629d9"}, "homepage": "https://quay.io/repository/dtan4/imageup/build/fake-build-id"}`,
+			imageWhitelist: []string{"foobar"},
+			code:           http.StatusForbidden,
+			expectErr:      true,
+		},
+		{
+			reqBody:        `invalid body`,
+			imageWhitelist: nil,
+			expectErr:      true,
 		},
 	}
 
@@ -46,6 +62,7 @@ func TestWebhooksQuayHandler(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		c.Set("DOCKER", &DummyDockerClient{})
+		c.Set("IMAGE_WHITELIST", tc.imageWhitelist)
 
 		err := webhooksQuayHandler(c)
 
