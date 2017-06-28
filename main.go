@@ -15,5 +15,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	server.Run(conf.Port)
+	server.Run(conf)
 }
