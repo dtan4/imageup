@@ -36,7 +36,7 @@ cross-build:
 	don
 
 .PHONY: dep
-depo:
+dep:
 ifeq ($(shell command -v dep 2> /dev/null),)
 	go get -u github.com/golang/dep/cmd/dep
 endif
