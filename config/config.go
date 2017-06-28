@@ -11,9 +11,10 @@ const (
 
 // Config represents configurations of ImageUp
 type Config struct {
-	BasicAuthPassword string `envconfig:"basic_auth_password"`
-	BasicAuthUsername string `envconfig:"basic_auth_username"`
-	Port              int    `envconfig:"port" default:"8000"`
+	BasicAuthPassword string   `envconfig:"basic_auth_password"`
+	BasicAuthUsername string   `envconfig:"basic_auth_username"`
+	ImageWhiteList    []string `envconfig:"image_whitelist"`
+	Port              int      `envconfig:"port" default:"8000"`
 }
 
 // Load loads configurations from environment variables

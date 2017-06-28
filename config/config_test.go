@@ -17,6 +17,7 @@ func TestLoad(t *testing.T) {
 			expectedConfig: &Config{
 				BasicAuthPassword: "",
 				BasicAuthUsername: "",
+				ImageWhiteList:    nil,
 				Port:              8000,
 			},
 			expectErr: false,
@@ -25,12 +26,17 @@ func TestLoad(t *testing.T) {
 			envs: map[string]string{
 				"IMAGEUP_BASIC_AUTH_PASSWORD": "password",
 				"IMAGEUP_BASIC_AUTH_USERNAME": "username",
+				"IMAGEUP_IMAGE_WHITELIST":     "quay.io/dtan4/foo,quay.io/dtan4/bar",
 				"IMAGEUP_PORT":                "12345",
 			},
 			expectedConfig: &Config{
 				BasicAuthPassword: "password",
 				BasicAuthUsername: "username",
-				Port:              12345,
+				ImageWhiteList: []string{
+					"quay.io/dtan4/foo",
+					"quay.io/dtan4/bar",
+				},
+				Port: 12345,
 			},
 			expectErr: false,
 		},
