@@ -62,6 +62,12 @@
   revision = "aabc10ec26b754e797f9028f4589c5b7bd90dc20"
 
 [[projects]]
+  name = "github.com/kelseyhightower/envconfig"
+  packages = ["."]
+  revision = "f611eb38b3875cc3bd991ca91c51d06446afa14c"
+  version = "v1.3.0"
+
+[[projects]]
   name = "github.com/labstack/echo"
   packages = [".","middleware"]
   revision = "935a60782cbbc55110e7bd4b33120e4567cbee43"
@@ -142,6 +148,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "85e6ebf66ac841d4eef0fd2d4b367a7a6e5e1cc8b3d8c1db73af0a8eabcdea5f"
+  inputs-digest = "e398d136a48196020296f8786e60e2792937c55762afc3c7b51d8a42386ed14f"
   solver-name = "gps-cdcl"
   solver-version = 1
