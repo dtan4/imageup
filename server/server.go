@@ -24,6 +24,8 @@ func Run(conf *config.Config) {
 	}
 	e.Use(middleware.SetDockerClient(dockerClient))
 
+	e.Use(middleware.SetImageWhitelist(conf.ImageWhiteList))
+
 	drawRoutes(e, conf)
 
 	addr := fmt.Sprintf(":%d", conf.Port)
