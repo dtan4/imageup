@@ -18,19 +18,13 @@ func Run(conf *config.Config) {
 	e.Use(echoMW.Logger())
 	e.Use(echoMW.Recover())
 
-	if conf.BasicAuthUsername != "" && conf.BasicAuthPassword != "" {
-		e.Use(echoMW.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
-			return username == conf.BasicAuthUsername && password == conf.BasicAuthPassword, nil
-		}))
-	}
-
 	dockerClient, err := docker.NewClient()
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
 	e.Use(middleware.SetDockerClient(dockerClient))
 
-	drawRoutes(e)
+	drawRoutes(e, conf)
 
 	addr := fmt.Sprintf(":%d", conf.Port)
 
