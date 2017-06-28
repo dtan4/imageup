@@ -20,5 +20,4 @@ func drawRoutes(e *echo.Echo, conf *config.Config) {
 		e.GET("/", rootHandler)
 		e.POST("/webhooks/quay", webhooksQuayHandler)
 	}
-
 }
