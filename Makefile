@@ -33,7 +33,7 @@ cross-build:
 		for arch in amd64 386; do \
 			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 go build $(LDFLAGS) -o dist/$$os-$$arch/$(NAME); \
 		done; \
-	don
+	done
 
 .PHONY: dep
 dep:
