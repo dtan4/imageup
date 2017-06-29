@@ -46,15 +46,21 @@ Enabling HTTP basic auth (`IMAGEUP_BASIC_AUTH_USERNAME`, `IMAGEUP_BASIC_AUTH_PAS
 ImageUp server launches at 8000/tcp by default.
 If you'd like to change th port, please specify `IMAGEUP_PORT`.
 
-```sh-session
+```bash
 # binary on local machine
-$ imageup
+export IMAGEUP_BASIC_AUTH_USERNAME=username
+export IMAGEUP_BASIC_AUTH_PASSWORD=password
+export IMAGEUP_IMAGE_WHITELIST=quay.io/dtan4/imageup,nginx
+imageup
 
 # Docker container
-$ docker run \
+docker run \
   --rm \
   --name imageup \
   -p 8000:8000 \
+  -e IMAGEUP_BASIC_AUTH_USERNAME=username \
+  -e IMAGEUP_BASIC_AUTH_PASSWORD=password \
+  -e IMAGEUP_IMAGE_WHITELIST=quay.io/dtan4/imageup,nginx \
   -v /var/run/docker.sock:/var/run/docker.sock \
   quay.io/dtan4/imageup:latest
 ```
@@ -81,7 +87,7 @@ After image build completed, the image will be pulled automatically :tada:
 |-----|----------|-------------|---------|---------|
 | `IMAGEUP_BASIC_AUTH_USERNAME` | | Basic auth username | | `username` |
 | `IMAGEUP_BASIC_AUTH_PASSWORD` | | Basic auth password | | `password` |
-| `IMAGEUP_BASIC_AUTH_WHITELIST` | | Pullable image whitelist (comma-separated) | | `quay.io/dtan4/imageup,nginx` |
+| `IMAGEUP_IMAGE_WHITELIST` | | Pullable image whitelist (comma-separated) | | `quay.io/dtan4/imageup,nginx` |
 | `IMAGEUP_PORT` | | HTTP server port | `8000` | `8123` |
 
 ## Author
