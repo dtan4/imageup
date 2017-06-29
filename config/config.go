@@ -13,7 +13,7 @@ const (
 type Config struct {
 	BasicAuthPassword string   `envconfig:"basic_auth_password"`
 	BasicAuthUsername string   `envconfig:"basic_auth_username"`
-	ImageWhiteList    []string `envconfig:"image_whitelist"`
+	ImageWhitelist    []string `envconfig:"image_whitelist"`
 	Port              int      `envconfig:"port" default:"8000"`
 }
 

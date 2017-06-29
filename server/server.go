@@ -24,7 +24,7 @@ func Run(conf *config.Config) {
 	}
 	e.Use(middleware.SetDockerClient(dockerClient))
 
-	e.Use(middleware.SetImageWhitelist(conf.ImageWhiteList))
+	e.Use(middleware.SetImageWhitelist(conf.ImageWhitelist))
 
 	drawRoutes(e, conf)
 

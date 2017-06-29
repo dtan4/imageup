@@ -17,7 +17,7 @@ func TestLoad(t *testing.T) {
 			expectedConfig: &Config{
 				BasicAuthPassword: "",
 				BasicAuthUsername: "",
-				ImageWhiteList:    nil,
+				ImageWhitelist:    nil,
 				Port:              8000,
 			},
 			expectErr: false,
@@ -32,7 +32,7 @@ func TestLoad(t *testing.T) {
 			expectedConfig: &Config{
 				BasicAuthPassword: "password",
 				BasicAuthUsername: "username",
-				ImageWhiteList: []string{
+				ImageWhitelist: []string{
 					"quay.io/dtan4/foo",
 					"quay.io/dtan4/bar",
 				},
