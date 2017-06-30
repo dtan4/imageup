@@ -44,7 +44,7 @@ make install
 Enabling HTTP basic auth (`IMAGEUP_BASIC_AUTH_USERNAME`, `IMAGEUP_BASIC_AUTH_PASSWORD`) and pullable image whitelise (`IMAGEUP_BASIC_AUTH_WHITELIST`) is strongly recommended for security reason.
 
 ImageUp server launches at 8000/tcp by default.
-If you'd like to change th port, please specify `IMAGEUP_PORT`.
+If you'd like to change the port, please specify `IMAGEUP_PORT`.
 
 ```bash
 # binary on local machine
