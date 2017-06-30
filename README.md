@@ -91,7 +91,7 @@ After image build completed, the image will be pulled automatically :tada:
 
 | Key | Required | Description | Default | Example |
 |-----|----------|-------------|---------|---------|
-| `DOCKER_API_VERSIONS` | | Docker API version | `1.29` (compatible Docker with v17.05.0-ce) | `1.24` (compatible with Docker v1.12) |
+| `DOCKER_API_VERSIONS` | | Docker API version | `1.29` (compatible with Docker v17.05.0-ce) | `1.24` (compatible with Docker v1.12) |
 | `IMAGEUP_BASIC_AUTH_USERNAME` | | Basic auth username | | `username` |
 | `IMAGEUP_BASIC_AUTH_PASSWORD` | | Basic auth password | | `password` |
 | `IMAGEUP_IMAGE_WHITELIST` | | Pullable image whitelist (comma-separated) | | `quay.io/dtan4/imageup,nginx` |
