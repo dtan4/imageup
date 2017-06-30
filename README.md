@@ -84,7 +84,7 @@ After image build completed, the image will be pulled automatically :tada:
 :bulb: If you got a `client is newer than server` error, please specify `DOCKER_API_VERSION` to match Docker client / server versions.
 
 ```
-"cannot pull image \"quay.io/wantedly/wantedly-cap:foo\": Error response from daemon: client is newer than server (client API version: 1.29, server API version: 1.24)"
+"cannot pull image \"quay.io/dtan4/imageup:foo\": Error response from daemon: client is newer than server (client API version: 1.29, server API version: 1.24)"
 ```
 
 ### Environment variables
