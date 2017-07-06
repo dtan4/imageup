@@ -82,12 +82,15 @@ func WebhooksQuay(c echo.Context) error {
 
 			pullID := uuid.NewV4().String()
 
-			docker.PrintPullMessage(out, func(line string) {
+			if err := docker.PrintPullMessage(out, func(line string) {
 				c.Logger().Printj(log.JSON{
 					"message": line,
 					"pull-id": pullID,
 				})
-			})
+			}); err != nil {
+				c.Logger().Error(err)
+				return
+			}
 
 			c.Logger().Printj(log.JSON{
 				"message": fmt.Sprintf("pulling %s:%s completed successfully", r.DockerURL, t),
