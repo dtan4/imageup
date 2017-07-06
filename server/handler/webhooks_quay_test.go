@@ -1,4 +1,4 @@
-package server
+package handler
 
 import (
 	"io"
@@ -18,7 +18,7 @@ func (*DummyDockerClient) PullImage(image, tag string) (io.ReadCloser, error) {
 	return ioutil.NopCloser(strings.NewReader("test")), nil
 }
 
-func TestWebhooksQuayHandler(t *testing.T) {
+func TestWebhooksQuay(t *testing.T) {
 	testcases := []struct {
 		reqBody        string
 		imageWhitelist []string
@@ -64,7 +64,7 @@ func TestWebhooksQuayHandler(t *testing.T) {
 		c.Set("DOCKER", &DummyDockerClient{})
 		c.Set("IMAGE_WHITELIST", tc.imageWhitelist)
 
-		err := webhooksQuayHandler(c)
+		err := WebhooksQuay(c)
 
 		if tc.expectErr {
 			if err == nil {

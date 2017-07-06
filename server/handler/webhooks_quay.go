@@ -1,4 +1,4 @@
-package server
+package handler
 
 import (
 	"fmt"
@@ -12,14 +12,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func rootHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "ImageUp")
-}
-
-func pingHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "pong")
-}
-
+// QuayRequest represents Quay build succeeded HTTP webhook payload
 type QuayRequest struct {
 	BuildID         string                      `json:"build_id"`
 	TriggerKind     string                      `json:"trigger_kind"`
@@ -35,6 +28,7 @@ type QuayRequest struct {
 	Homepage        string                      `json:"homepage"`
 }
 
+// QuayRequestTriggerMetadata represents trigger metadata of webhook payload
 type QuayRequestTriggerMetadata struct {
 	DefaultBranch string `json:"default_branch"`
 	Ref           string `json:"ref"`
@@ -51,7 +45,8 @@ func contains(ss []string, s string) bool {
 	return false
 }
 
-func webhooksQuayHandler(c echo.Context) error {
+// WebhooksQuay represents the handler of "/webhooks/quay"
+func WebhooksQuay(c echo.Context) error {
 	r := new(QuayRequest)
 
 	if err := c.Bind(r); err != nil {
