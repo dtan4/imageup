@@ -45,8 +45,8 @@ func contains(ss []string, s string) bool {
 	return false
 }
 
-// WebhooksQuayHandler represents the handler of "/webhooks/quay"
-func WebhooksQuayHandler(c echo.Context) error {
+// WebhooksQuay represents the handler of "/webhooks/quay"
+func WebhooksQuay(c echo.Context) error {
 	r := new(QuayRequest)
 
 	if err := c.Bind(r); err != nil {

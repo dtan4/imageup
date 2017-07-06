@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// RootHandler represents the handler for "/"
-func RootHandler(c echo.Context) error {
+// Root represents the handler for "/"
+func Root(c echo.Context) error {
 	return c.String(http.StatusOK, "ImageUp")
 }

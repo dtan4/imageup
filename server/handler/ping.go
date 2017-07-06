@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// PingHandler represents the handler for "/ping"
-func PingHandler(c echo.Context) error {
+// Ping represents the handler for "/ping"
+func Ping(c echo.Context) error {
 	return c.String(http.StatusOK, "pong")
 }
