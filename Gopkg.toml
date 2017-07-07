@@ -32,6 +32,15 @@
   name = "github.com/docker/distribution"
   branch = "master"
 
+# To use reference package:
+#   vendor/github.com/docker/docker/registry/registry.go:30: cannot call non-function tlsconfig.ServerDefault (type tls.Config)
+#   vendor/github.com/docker/docker/registry/registry.go:66: undefined: tlsconfig.SystemCertPool
+#   vendor/github.com/docker/docker/registry/registry.go:168: cannot call non-function tlsconfig.ServerDefault (type tls.Config)
+#   vendor/github.com/docker/docker/registry/service_v2.go:11: cannot call non-function tlsconfig.ServerDefault (type tls.Config)
+[[override]]
+  name = "github.com/docker/go-connections"
+  branch = "master"
+
 [[constraint]]
   name = "github.com/satori/go.uuid"
   branch = "master"
