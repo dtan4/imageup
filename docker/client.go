@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -14,6 +15,10 @@ import (
 	"github.com/docker/docker/cli/config/credentials"
 	"github.com/docker/docker/client"
 	"github.com/pkg/errors"
+)
+
+var (
+	ecrRegistryRegexp = regexp.MustCompile("^([0-9]{12})\\.dkr\\.ecr\\.(.+?)\\.amazonaws\\.com$")
 )
 
 // Client represents the interface of Docker Engine API client
@@ -47,6 +52,10 @@ func NewClient() (*RealClient, error) {
 
 func getRegistry(image string) string {
 	ss := strings.Split(image, "/")
+
+	if ecrRegistryRegexp.MatchString(ss[0]) {
+		return "https://" + ss[0]
+	}
 
 	if len(ss) == 3 {
 		return "https://" + ss[0]
