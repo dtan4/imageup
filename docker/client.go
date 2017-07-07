@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/cli/config"
@@ -44,26 +45,55 @@ func NewClient() (*RealClient, error) {
 	}, nil
 }
 
+func getRegistry(image string) string {
+	ss := strings.Split(image, "/")
+
+	if len(ss) == 3 {
+		return "https://" + ss[0]
+	}
+
+	return "https://index.docker.io/v1/"
+}
+
+func (c *RealClient) getRegistryAuth(image string) (string, error) {
+	var store credentials.Store
+
+	if c.cfg.CredentialsStore == "" {
+		store = credentials.NewFileStore(c.cfg)
+	} else {
+		store = credentials.NewNativeStore(c.cfg, c.cfg.CredentialsStore)
+	}
+
+	newAuths, err := store.GetAll()
+	if err != nil {
+		return "", errors.Wrap(err, "failed to get Docker credentials")
+	}
+
+	registry := getRegistry(image)
+
+	if v, ok := newAuths[registry]; ok {
+		buf, err := json.Marshal(v)
+		if err != nil {
+			return "", errors.Wrap(err, "failed to marshal authConfig to JSON")
+		}
+
+		return base64.URLEncoding.EncodeToString(buf), nil
+	}
+
+	return "", nil
+}
+
 // PullImage pulls image from Docker Image Registry
 func (c *RealClient) PullImage(image, tag string) (io.ReadCloser, error) {
 	imageRef := fmt.Sprintf("%s:%s", image, tag)
 
-	store := credentials.NewNativeStore(c.cfg, c.cfg.CredentialsStore)
-
-	newAuths, err := store.GetAll()
+	registryAuth, err := c.getRegistryAuth(image)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get Docker credentials")
+		return nil, errors.Wrapf(err, "failed to get Docker registry credential for %s", image)
 	}
-
-	buf, err := json.Marshal(newAuths["https://quay.io"])
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal authConfig to JSON")
-	}
-
-	fmt.Println(string(buf))
 
 	out, err := c.cli.ImagePull(context.Background(), imageRef, types.ImagePullOptions{
-		RegistryAuth: base64.URLEncoding.EncodeToString(buf),
+		RegistryAuth: registryAuth,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot pull image %q", imageRef)
