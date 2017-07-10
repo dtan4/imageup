@@ -50,18 +50,18 @@ func NewClient() (*RealClient, error) {
 	}, nil
 }
 
-func getRegistry(image string) string {
+func getRegistries(image string) []string {
 	ss := strings.Split(image, "/")
 
 	if ecrRegistryRegexp.MatchString(ss[0]) {
-		return "https://" + ss[0]
+		return []string{ss[0], "https://" + ss[0]}
 	}
 
 	if len(ss) == 3 {
-		return "https://" + ss[0]
+		return []string{ss[0], "https://" + ss[0]}
 	}
 
-	return "https://index.docker.io/v1/"
+	return []string{"https://index.docker.io/v1/"}
 }
 
 func (c *RealClient) getRegistryAuth(image string) (string, error) {
@@ -78,15 +78,17 @@ func (c *RealClient) getRegistryAuth(image string) (string, error) {
 		return "", errors.Wrap(err, "failed to get Docker credentials")
 	}
 
-	registry := getRegistry(image)
+	registries := getRegistries(image)
 
-	if v, ok := newAuths[registry]; ok {
-		buf, err := json.Marshal(v)
-		if err != nil {
-			return "", errors.Wrap(err, "failed to marshal authConfig to JSON")
+	for _, r := range registries {
+		if v, ok := newAuths[r]; ok {
+			buf, err := json.Marshal(v)
+			if err != nil {
+				return "", errors.Wrap(err, "failed to marshal authConfig to JSON")
+			}
+
+			return base64.URLEncoding.EncodeToString(buf), nil
 		}
-
-		return base64.URLEncoding.EncodeToString(buf), nil
 	}
 
 	return "", nil
