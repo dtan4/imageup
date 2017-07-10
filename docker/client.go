@@ -78,9 +78,7 @@ func (c *RealClient) getRegistryAuth(image string) (string, error) {
 		return "", errors.Wrap(err, "failed to get Docker credentials")
 	}
 
-	registries := getRegistries(image)
-
-	for _, r := range registries {
+	for _, r := range getRegistries(image) {
 		if v, ok := newAuths[r]; ok {
 			buf, err := json.Marshal(v)
 			if err != nil {
